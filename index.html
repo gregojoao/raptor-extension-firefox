@@ -4,100 +4,125 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Raptor Extension para Firefox</title>
-<meta name="description" content="Instale a Raptor Extension no Firefox e conecte sua Amazon no Raptor em poucos minutos.">
+<meta name="description" content="Instale a Raptor Extension no Firefox e conecte sua conta da Amazon Associados ao Raptor em poucos minutos.">
 <style>
   :root {
-    --bg: #0f1115; --card: #181b22; --text: #e9ecf1; --muted: #a3abba;
-    --accent: #ff7a1a; --accent-text: #1a0d00; --ok: #3ecf8e; --warn: #ffb020; --line: #2a2f3a;
+    --bg: #0e1014; --card: #171a21; --card2: #1d212a; --text: #eceff4; --muted: #a2aab8;
+    --accent: #ff7a1a; --accent-text: #1a0d00; --ok: #3ecf8e; --warn: #ffb020; --bad: #ff5a5a; --line: #282d38;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--text);
-         font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
-  h1 { font-size: 30px; line-height: 1.2; margin: 0 0 8px; }
-  h2 { font-size: 21px; margin: 40px 0 12px; }
-  p.lead { color: var(--muted); margin: 0 0 24px; }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin: 16px 0; }
-  .btn { display: inline-block; background: var(--accent); color: var(--accent-text); font-weight: 700;
-         font-size: 19px; text-decoration: none; padding: 14px 26px; border-radius: 12px; }
+         font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 780px; margin: 0 auto; padding: 36px 16px 72px; }
+  a { color: var(--accent); }
+  .hero { text-align: center; padding: 8px 0 4px; }
+  .hero .logo { font-size: 52px; line-height: 1; }
+  h1 { font-size: 32px; line-height: 1.2; margin: 12px 0 10px; }
+  .lead { color: var(--muted); margin: 0 auto 26px; max-width: 600px; }
+  .tempo { display: inline-flex; gap: 18px; flex-wrap: wrap; justify-content: center; color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+  h2 { font-size: 22px; margin: 44px 0 6px; display: flex; align-items: center; gap: 10px; }
+  .sub { color: var(--muted); margin: 0 0 14px; font-size: 15px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; margin: 14px 0; }
+  .cta { text-align: center; background: linear-gradient(180deg, var(--card2), var(--card)); }
+  .btn { display: inline-block; background: var(--accent); color: var(--accent-text); font-weight: 800;
+         font-size: 20px; text-decoration: none; padding: 16px 30px; border-radius: 14px;
+         box-shadow: 0 6px 24px rgba(255,122,26,.25); }
   .btn:hover { filter: brightness(1.08); }
-  .aviso { border-left: 4px solid var(--warn); }
-  .aviso.ruim { border-left-color: #ff5a5a; }
+  .selo { color: var(--muted); font-size: 14px; margin: 12px 0 0; }
   ol.passos { counter-reset: p; list-style: none; padding: 0; margin: 0; }
-  ol.passos > li { counter-increment: p; position: relative; padding: 14px 0 14px 52px; border-bottom: 1px solid var(--line); }
+  ol.passos > li { counter-increment: p; position: relative; padding: 14px 0 14px 54px; border-bottom: 1px solid var(--line); }
   ol.passos > li:last-child { border-bottom: 0; }
-  ol.passos > li::before { content: counter(p); position: absolute; left: 0; top: 12px; width: 36px; height: 36px;
+  ol.passos > li::before { content: counter(p); position: absolute; left: 0; top: 12px; width: 38px; height: 38px;
          border-radius: 50%; background: var(--accent); color: var(--accent-text); font-weight: 800;
          display: flex; align-items: center; justify-content: center; }
-  kbd, code { background: #232834; border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; font-size: 15px; }
-  .muted { color: var(--muted); font-size: 15px; }
-  .ok { color: var(--ok); }
-  #nao-firefox { display: none; }
+  .dica { display: block; color: var(--muted); font-size: 15px; margin-top: 4px; }
+  kbd, code { background: #232834; border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; font-size: 15px; white-space: nowrap; }
+  .pronto { margin: 16px 0 0; padding: 12px 16px; border-radius: 12px; background: rgba(62,207,142,.1); color: var(--ok); font-weight: 600; }
+  .regras { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+  .regra { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+  .regra b { display: block; margin-bottom: 4px; }
+  .regra p { margin: 0; color: var(--muted); font-size: 15px; }
+  @media (max-width: 600px) { .regras { grid-template-columns: 1fr; } h1 { font-size: 27px; } }
+  details { border-bottom: 1px solid var(--line); padding: 12px 0; }
+  details:last-child { border-bottom: 0; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { color: var(--muted); margin: 8px 0 0; }
+  .alerta { display: none; border-left: 4px solid var(--bad); }
+  footer { text-align: center; color: var(--muted); font-size: 14px; margin-top: 48px; }
 </style>
 </head>
 <body>
 <main>
-  <h1>🦖 Raptor Extension para Firefox</h1>
-  <p class="lead">Conecte sua Amazon no Raptor em poucos minutos. A extensão só copia o seu login da página aberta — ela não pede nem guarda senha.</p>
+  <section class="hero">
+    <div class="logo">🦖</div>
+    <h1>Raptor Extension para Firefox</h1>
+    <p class="lead">Conecte sua conta da <strong>Amazon Associados</strong> ao Raptor em poucos minutos — para ele gerar seus links de afiliado e acompanhar seus ganhos.</p>
+    <div class="tempo"><span>⏱️ ~3 minutos</span><span>🔒 Não pede sua senha</span><span>✅ Assinada pela Mozilla</span></div>
+  </section>
 
-  <div class="card aviso ruim" id="nao-firefox">
-    <strong>Você não está no Firefox.</strong> Abra este mesmo link no Firefox para instalar.
-    Ainda não tem? Baixe grátis em <a href="https://www.firefox.com/pt-BR/" style="color:var(--accent)">firefox.com</a>.
+  <div class="card alerta" id="nao-firefox">
+    🦊 <strong>Você não está no Firefox.</strong> Abra este mesmo link no Firefox para instalar.
+    Ainda não tem? Baixe grátis em <a href="https://www.firefox.com/pt-BR/">firefox.com</a>.
   </div>
 
-  <div class="card" style="text-align:center">
-    <a class="btn" href="raptor-extension.xpi" id="instalar">⬇️ Instalar no Firefox</a>
-    <p class="muted" style="margin:12px 0 0">Versão 0.5.1 · assinada pela Mozilla</p>
+  <div class="card cta">
+    <a class="btn" href="raptor-extension.xpi">🦊 Instalar no Firefox</a>
+    <p class="selo">Versão 0.5.1 · gratuita · funciona no Firefox para computador</p>
   </div>
 
-  <h2>1) Instalar (uma vez só)</h2>
+  <h2>🧩 Parte 1 — Instalar a extensão</h2>
+  <p class="sub">Só na primeira vez.</p>
   <div class="card">
     <ol class="passos">
-      <li>Clique no botão laranja <strong>Instalar no Firefox</strong> aí em cima.</li>
+      <li>Clique no botão laranja <strong>🦊 Instalar no Firefox</strong>, aqui em cima.</li>
       <li>O Firefox pergunta se este site pode instalar um complemento. Clique em <strong>Permitir</strong>.</li>
-      <li>Aparece <em>"Adicionar Raptor Extension?"</em>. Clique em <strong>Adicionar</strong>.</li>
-      <li>Na mensagem de confirmação, <strong>marque a caixinha "Permitir que esta extensão seja executada em janelas privativas"</strong> e clique em <strong>OK</strong>.
-        <br><span class="muted">Esqueceu de marcar? Digite <code>about:addons</code> na barra de endereço → Raptor Extension → "Executar em janelas privativas" → <strong>Permitir</strong>.</span></li>
-      <li>Libere o acesso aos sites: digite <code>about:addons</code> na barra de endereço → clique em <strong>Raptor Extension</strong> → aba <strong>Permissões</strong> → ligue todas as chavinhas.</li>
-      <li><span class="muted">(Opcional, mas ajuda)</span> Clique no ícone de <strong>peça de quebra-cabeça</strong> 🧩 no canto superior direito → engrenagem ao lado da Raptor Extension → <strong>Fixar na barra de ferramentas</strong>.</li>
+      <li>Na janela <em>“Adicionar Raptor Extension?”</em>, clique em <strong>Adicionar</strong>.</li>
+      <li>Na confirmação, <strong>marque a opção “Permitir que esta extensão seja executada em janelas privativas”</strong> e clique em <strong>OK</strong>.
+        <span class="dica">💡 Esqueceu? Digite <code>about:addons</code> na barra de endereço → <strong>Raptor Extension</strong> → <em>Executar em janelas privativas</em> → <strong>Permitir</strong>.</span></li>
+      <li>Libere o acesso aos sites: digite <code>about:addons</code> na barra de endereço → <strong>Raptor Extension</strong> → aba <strong>Permissões</strong> → <strong>ligue todas as chaves</strong>.</li>
+      <li><strong>Deixe o ícone à vista</strong> (recomendado): clique na peça de quebra-cabeça 🧩 no canto superior direito → engrenagem da Raptor Extension → <strong>Fixar na barra de ferramentas</strong>.</li>
     </ol>
   </div>
 
-  <h2>2) Conectar a Amazon</h2>
+  <h2>🔗 Parte 2 — Conectar a Amazon ao Raptor</h2>
+  <p class="sub">Faça agora e sempre que o Raptor avisar que a Amazon desconectou.</p>
   <div class="card">
     <ol class="passos">
-      <li>Abra uma <strong>janela privativa</strong> do Firefox: aperte <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> <span class="muted">(no Mac: <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>)</span>.</li>
-      <li>Nessa janela, entre em <strong>associados.amazon.com.br</strong> e faça login. Se aparecer, marque <strong>"Manter-me conectado"</strong>.</li>
-      <li>Com a página da Amazon aberta, clique no ícone <strong>⚡ RAPTOR</strong> da extensão. Ela captura tudo sozinha.</li>
-      <li>Clique em <strong>Copiar</strong>.</li>
-      <li>Abra o painel do Raptor → <strong>Integrações</strong> → <strong>Amazon</strong>, cole e <strong>salve</strong>.</li>
-      <li><strong>Feche a janela privativa</strong> — só fechar no X, <strong>sem clicar em "Sair"</strong> na Amazon.</li>
+      <li>Abra uma <strong>janela privativa</strong> do Firefox: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>
+        <span class="dica">No Mac: <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd></span></li>
+      <li>Nessa janela, acesse <strong>associados.amazon.com.br</strong> e entre na sua conta. Se aparecer, marque <strong>“Manter-me conectado”</strong>.</li>
+      <li>Com a página da Amazon aberta, clique no ícone <strong>⚡ RAPTOR</strong>. A extensão lê sozinha os <strong>dados de sessão</strong> que o Raptor precisa.</li>
+      <li>Abra o painel do Raptor em <strong>Integrações → Amazon</strong>. Na extensão, clique em <strong>Copiar</strong> ao lado de cada campo e cole no campo de mesmo nome no Raptor.
+        <span class="dica">💡 Se a extensão não encontrar a <em>tag</em>, digite a sua (ex.: <code>seunome-20</code>) — ela aparece em qualquer link de afiliado seu.</span></li>
+      <li>Clique em <strong>Salvar</strong> no Raptor.</li>
+      <li><strong>Feche a janela privativa</strong> no X — <strong>sem clicar em “Sair”</strong> na Amazon.</li>
     </ol>
-    <p class="ok" style="margin:12px 0 0">✅ Pronto! O Raptor já está conectado na sua Amazon.</p>
+    <p class="pronto">🎉 Pronto! Sua Amazon está conectada ao Raptor.</p>
   </div>
 
-  <h2>⚠️ Importante</h2>
-  <div class="card aviso">
-    <ul style="margin:0;padding-left:20px">
-      <li><strong>Use o Firefox, não o Chrome.</strong> No Chrome, a Amazon derruba esse login em poucos minutos.</li>
-      <li><strong>Nunca clique em "Sair"</strong> na Amazon depois de salvar. Sair desconecta o Raptor também.</li>
-      <li>Use a <strong>janela privativa</strong> e feche depois. Assim o Raptor fica sendo o único usando esse login, e ele dura muito mais.</li>
-      <li>Se um dia o Raptor avisar que a Amazon desconectou, é só repetir a parte <strong>2) Conectar a Amazon</strong>.</li>
-    </ul>
+  <h2>⚠️ Regras de ouro</h2>
+  <div class="regras">
+    <div class="regra"><b>🦊 Use o Firefox</b><p>No Chrome, a Amazon desconecta o Raptor em poucos minutos.</p></div>
+    <div class="regra"><b>🚪 Nunca clique em “Sair”</b><p>Sair da Amazon depois de salvar desconecta o Raptor também.</p></div>
+    <div class="regra"><b>🕶️ Janela privativa</b><p>Conecte por ela e feche no final. Assim a conexão costuma durar bem mais.</p></div>
+    <div class="regra"><b>🔁 Desconectou?</b><p>É só repetir a Parte 2. Não precisa instalar de novo.</p></div>
   </div>
 
-  <h2>Dúvidas comuns</h2>
+  <h2>❓ Dúvidas comuns</h2>
   <div class="card">
-    <p><strong>Cliquei no botão e só baixou um arquivo.</strong><br>
-      Você provavelmente está em outro navegador. Abra este link no Firefox e clique de novo.</p>
-    <p><strong>A extensão diz "Vazio" ou não acha nada.</strong><br>
-      Confira se você está logado na Amazon Associados <em>nessa mesma janela</em> e se ligou as permissões (passo 5 da instalação). Depois clique em <strong>Recapturar</strong>.</p>
-    <p style="margin-bottom:0"><strong>O ícone não aparece na janela privativa.</strong><br>
-      Falta permitir a extensão em janelas privativas (passo 4 da instalação).</p>
+    <details><summary>Cliquei no botão e só baixou um arquivo</summary>
+      <p>Você está em outro navegador. Abra este link no Firefox e clique de novo no botão.</p></details>
+    <details><summary>A extensão mostra “Vazio” ou não encontra nada</summary>
+      <p>Confira se você entrou na sua conta da Amazon Associados <em>nessa mesma janela</em> e se ligou as permissões (Parte 1, passo 5). Depois clique em <strong>Recapturar</strong>.</p></details>
+    <details><summary>O ícone não aparece na janela privativa</summary>
+      <p>Falta liberar a extensão em janelas privativas (Parte 1, passo 4).</p></details>
+    <details><summary>A extensão vê minha senha?</summary>
+      <p>Não. Ela lê só os dados de sessão da página da Amazon que está aberta, no seu próprio computador, para você colar no Raptor. Senha nunca passa por ela.</p></details>
   </div>
+
+  <footer>Raptor · extensão assinada pela Mozilla</footer>
 </main>
 <script>
-  // Só um aviso visual: o botão continua funcionando em qualquer navegador.
   try {
     if (!/firefox/i.test(navigator.userAgent)) document.getElementById('nao-firefox').style.display = 'block';
   } catch (e) {}
